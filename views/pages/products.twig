@@ -1,0 +1,76 @@
+{# Products Listing Page - صفحة قائمة المنتجات #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="products-page">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">{{ 'header.products' | t }}</h1>
+            {% if category %}
+                <p class="page-subtitle">{{ category.description }}</p>
+            {% endif %}
+        </header>
+
+        <div class="products-layout">
+            <aside class="filters" aria-label="تصنيفات">
+                {% if categories %}
+                <h2 class="filters-title">{{ 'header.categories' | t }}</h2>
+                <ul class="filter-list">
+                    {% for cat in categories %}
+                        <li><a href="{{ cat.url }}" class="filter-link {{ category and cat.id == category.id ? 'active' : '' }}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </aside>
+
+            <section class="products-area" aria-label="قائمة المنتجات">
+                {% if products and products | length > 0 %}
+                    <div class="products-grid">
+                        {% for product in products %}
+                            <div class="product-col">{% include 'components/product/card' with {'product': product} %}</div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <p>{{ 'products.empty' | default('لا توجد منتجات حالياً') }}</p>
+                        <a class="btn btn-primary" href="/">{{ 'hero.explore' | t }}</a>
+                    </div>
+                {% endif %}
+
+                {% if pagination %}
+                <nav class="pagination" aria-label="التنقل بين الصفحات">
+                    {% if pagination.prev_url %}
+                        <a class="page-link" href="{{ pagination.prev_url }}">‹</a>
+                    {% endif %}
+                    <span class="page-status">{{ pagination.current_page }} / {{ pagination.total_pages }}</span>
+                    {% if pagination.next_url %}
+                        <a class="page-link" href="{{ pagination.next_url }}">›</a>
+                    {% endif %}
+                </nav>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
+
+<style>
+    .products-page { padding: var(--spacing-3xl) 0; }
+    .page-header { margin-bottom: var(--spacing-xl); }
+    .page-title { margin: 0; color: var(--primary-color); }
+    .page-subtitle { color: var(--text-light); }
+    .products-layout { display: grid; grid-template-columns: 260px 1fr; gap: var(--spacing-xl); align-items: start; }
+    .filters { background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: var(--spacing-lg); }
+    .filters-title { margin-top: 0; font-size: 18px; }
+    .filter-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .filter-link { color: var(--text-dark); text-decoration: none; padding: 8px 12px; border-radius: 6px; display: block; }
+    .filter-link.active, .filter-link:hover { background: var(--secondary-color); color: var(--primary-color); }
+    .products-area { display: flex; flex-direction: column; gap: var(--spacing-xl); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: var(--spacing-lg); }
+    .empty-state { text-align: center; padding: var(--spacing-2xl); background: var(--secondary-color); border-radius: var(--border-radius-md); }
+    .pagination { display: flex; align-items: center; gap: 12px; justify-content: center; }
+    .page-link { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-dark); text-decoration: none; }
+    .page-status { color: var(--text-light); }
+    @media (max-width: 1024px) { .products-layout { grid-template-columns: 1fr; } .filters { order: 2; } }
+    @media (max-width: 640px) { .products-grid { grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); } }
+</style>
+{% endblock %}

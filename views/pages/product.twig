@@ -1,0 +1,155 @@
+{# Product Details Page - صفحة تفاصيل المنتج #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="product-page">
+    <div class="container">
+        <nav class="breadcrumb" aria-label="مسار التنقل">
+            <a href="/" class="breadcrumb-link">{{ 'header.home' | t }}</a>
+            {% if product.category %}
+                <span class="breadcrumb-separator">/</span>
+                <a href="{{ product.category.url | default('#') }}" class="breadcrumb-link">{{ product.category.name | default(product.category) }}</a>
+            {% endif %}
+            <span class="breadcrumb-separator">/</span>
+            <span aria-current="page">{{ product.name }}</span>
+        </nav>
+
+        <div class="product-layout">
+            <div class="product-gallery" aria-label="صور المنتج">
+                {% if product.images %}
+                    <div class="gallery-main">
+                        <img src="{{ product.images.0 }}" alt="{{ product.name }}" class="gallery-image" loading="lazy">
+                    </div>
+                    <div class="gallery-thumbs" role="list">
+                        {% for image in product.images %}
+                        <button class="thumb" type="button" aria-label="عرض الصورة {{ loop.index }}" onclick="document.querySelector('.gallery-image').src='{{ image }}'">
+                            <img src="{{ image }}" alt="{{ product.name }} {{ loop.index }}" loading="lazy">
+                        </button>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <img src="{{ theme.settings.get('placeholder') | asset_url }}" alt="{{ product.name }}" class="gallery-image" loading="lazy">
+                {% endif %}
+            </div>
+
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }}</h1>
+                {% if product.rating %}
+                <div class="product-rating" aria-label="{{ 'products.rating' | t }} {{ product.rating }}">
+                    <div class="stars">
+                        {% for i in range(1,5) %}
+                            <span class="star {{ i <= product.rating ? 'filled' : '' }}">★</span>
+                        {% endfor %}
+                    </div>
+                    {% if product.review_count %}
+                    <span class="reviews">({{ product.review_count }} {{ 'products.reviews' | t }})</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="product-price">
+                    {% if product.sale_price %}
+                        <span class="sale-price">{{ product.sale_price | price }}</span>
+                        <span class="original-price">{{ product.price | price }}</span>
+                    {% else %}
+                        <span class="price">{{ product.price | price }}</span>
+                    {% endif %}
+                </div>
+
+                {% if product.summary %}
+                <p class="product-summary">{{ product.summary }}</p>
+                {% endif %}
+
+                {% if product.variants %}
+                <form class="variant-form">
+                    {% for variant in product.variants %}
+                        <label class="variant-label" for="variant-{{ loop.index }}">{{ variant.name }}</label>
+                        <select id="variant-{{ loop.index }}" class="variant-select" name="variant_{{ variant.name }}">
+                            {% for option in variant.options %}
+                                <option value="{{ option.id }}">{{ option.name }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endfor %}
+                </form>
+                {% endif %}
+
+                <div class="product-actions">
+                    {% if product.quantity > 0 %}
+                        <button class="btn btn-primary" data-add-to-cart data-product-id="{{ product.id }}" data-quantity="1">{{ 'products.add_to_cart' | t }}</button>
+                    {% else %}
+                        <button class="btn btn-disabled" disabled>{{ 'products.out_of_stock' | t }}</button>
+                    {% endif %}
+
+                    {% if theme.settings.get('enable_wishlist') %}
+                        <button class="btn btn-outline" data-wishlist-toggle data-product-id="{{ product.id }}">{{ 'wishlist.add' | default('أضف إلى المفضلة') }}</button>
+                    {% endif %}
+                </div>
+
+                {% if product.tags %}
+                <div class="product-tags" aria-label="الوسوم">
+                    {% for tag in product.tags %}
+                        <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if product.description %}
+        <section class="product-details">
+            <h2>{{ 'products.details' | default('تفاصيل المنتج') }}</h2>
+            <div class="rich-text">{{ product.description | raw }}</div>
+        </section>
+        {% endif %}
+
+        {% if related_products %}
+        <section class="related-products">
+            <div class="section-header">
+                <h2 class="section-title">{{ 'products.related' | default('منتجات مشابهة') }}</h2>
+            </div>
+            <div class="products-grid">
+                {% for related in related_products | slice(0,4) %}
+                    <div class="product-col">{% include 'components/product/card' with {'product': related} %}</div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .product-page { padding: var(--spacing-3xl) 0; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; color: var(--text-light); font-size: 14px; margin-bottom: var(--spacing-lg); }
+    .breadcrumb-link { color: var(--primary-color); text-decoration: none; }
+    .product-layout { display: grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap: var(--spacing-xl); align-items: start; }
+    .product-gallery { background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: var(--spacing-md); }
+    .gallery-main { margin-bottom: var(--spacing-md); }
+    .gallery-image { width: 100%; border-radius: var(--border-radius-sm); object-fit: cover; }
+    .gallery-thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px,1fr)); gap: 8px; }
+    .thumb { border: 1px solid var(--border-color); background: white; border-radius: 6px; padding: 4px; cursor: pointer; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { display: flex; flex-direction: column; gap: var(--spacing-md); }
+    .product-title { margin: 0; }
+    .product-rating { display: flex; align-items: center; gap: 8px; color: var(--text-light); }
+    .stars { display: flex; gap: 4px; }
+    .star { color: var(--gray-300); }
+    .star.filled { color: #FCD34D; }
+    .product-price { display: flex; gap: 12px; align-items: baseline; }
+    .price, .sale-price { font-size: 28px; font-weight: 700; color: var(--primary-color); }
+    .original-price { text-decoration: line-through; color: var(--text-light); }
+    .product-summary { color: var(--text-dark); line-height: 1.6; }
+    .variant-form { display: grid; gap: 12px; }
+    .variant-select { padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); }
+    .product-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+    .btn-primary { background: var(--accent-color); color: white; }
+    .btn-primary:hover { background: #7BCA00; }
+    .btn-outline { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
+    .btn-disabled { background: var(--secondary-color); color: var(--text-light); cursor: not-allowed; }
+    .product-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { background: var(--secondary-color); padding: 6px 10px; border-radius: 12px; font-size: 12px; }
+    .product-details { margin-top: var(--spacing-2xl); background: white; border-radius: var(--border-radius-md); border: 1px solid var(--border-color); padding: var(--spacing-xl); }
+    .related-products { margin-top: var(--spacing-3xl); }
+    @media (max-width: 768px) { .product-actions { flex-direction: column; } .btn { width: 100%; } }
+</style>
+{% endblock %}

@@ -29,7 +29,14 @@
                     {% endif %}
                 </a>
             </div>
-            
+
+            {# Mobile Menu Toggle #}
+            <button class="mobile-menu-toggle" data-mobile-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="{{ 'header.menu' | t }}">
+                <span class="toggle-line"></span>
+                <span class="toggle-line"></span>
+                <span class="toggle-line"></span>
+            </button>
+
             {# Main Menu #}
             <ul class="navbar-menu" role="menubar">
                 <li role="menuitem">
@@ -51,15 +58,16 @@
             {# Right Actions #}
             <div class="navbar-actions">
                 {# Search #}
-                <form class="search-form" role="search" method="get" action="/search">
+                <form class="search-form" role="search" method="get" action="/search" data-search-form>
                     <label for="search-input" class="sr-only">{{ 'common.search' | t }}</label>
-                    <input 
-                        type="search" 
-                        id="search-input" 
-                        class="search-input" 
-                        placeholder="{{ 'common.search' | t }}" 
+                    <input
+                        type="search"
+                        id="search-input"
+                        class="search-input"
+                        placeholder="{{ 'common.search' | t }}"
                         name="q"
                         aria-label="{{ 'common.search' | t }}"
+                        data-search-input
                     >
                     <button type="submit" class="search-btn" aria-label="بحث">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
@@ -98,6 +106,35 @@
                     <span class="cart-count" aria-label="عدد العناصر: {{ cart.items_count }}">{{ cart.items_count }}</span>
                     {% endif %}
                 </a>
+            </div>
+        </div>
+        {# Mobile Menu Drawer #}
+        <div class="mobile-menu" id="mobile-menu" data-mobile-menu>
+            <div class="mobile-menu-inner">
+                <form class="mobile-search" role="search" method="get" action="/search" data-search-form>
+                    <label for="mobile-search-input" class="sr-only">{{ 'common.search' | t }}</label>
+                    <input id="mobile-search-input" name="q" class="mobile-search-input" type="search" placeholder="{{ 'common.search' | t }}" data-search-input>
+                    <button type="submit" class="mobile-search-btn" aria-label="{{ 'common.search' | t }}">بحث</button>
+                </form>
+                <ul class="mobile-menu-list" role="menubar">
+                    <li role="menuitem"><a href="/" class="mobile-link">{{ 'header.home' | t }}</a></li>
+                    <li role="menuitem"><a href="/products" class="mobile-link">{{ 'header.products' | t }}</a></li>
+                    {% for category in categories %}
+                        <li role="menuitem"><a href="{{ category.url }}" class="mobile-link">{{ category.name }}</a></li>
+                    {% endfor %}
+                    <li role="menuitem"><a href="/contact" class="mobile-link">{{ 'header.contact' | t }}</a></li>
+                </ul>
+                <div class="mobile-actions">
+                    {% if customer %}
+                        <a class="mobile-link" href="/customer/profile">{{ 'common.account' | t }}</a>
+                        <a class="mobile-link" href="/customer/orders">{{ 'header.orders' | default('الطلبات') }}</a>
+                        <a class="mobile-link" href="/customer/wishlist">{{ 'wishlist.title' | default('قائمة الرغبات') }}</a>
+                        <a class="mobile-link" href="/logout">{{ 'common.logout' | t }}</a>
+                    {% else %}
+                        <a class="mobile-link" href="/login">{{ 'common.login' | t }}</a>
+                        <a class="mobile-link" href="/register">{{ 'common.register' | t }}</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
@@ -297,7 +334,47 @@
         background-color: var(--secondary-color);
         color: var(--accent-color);
     }
-    
+
+    .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        background: none;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .toggle-line {
+        width: 22px;
+        height: 2px;
+        background: var(--text-dark);
+    }
+
+    .mobile-menu {
+        display: none;
+        background: white;
+        border-top: 1px solid #E5E7EB;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+
+    .mobile-menu.active { display: block; }
+
+    .mobile-menu-inner { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+    .mobile-menu-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+
+    .mobile-link { color: var(--text-dark); text-decoration: none; font-weight: 600; }
+
+    .mobile-search { display: flex; gap: 8px; }
+
+    .mobile-search-input { flex: 1; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; }
+
+    .mobile-search-btn { padding: 10px 16px; background: var(--accent-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+    .mobile-actions { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E5E7EB; padding-top: 12px; }
+
     .sr-only {
         position: absolute;
         width: 1px;
@@ -309,14 +386,10 @@
         white-space: nowrap;
         border-width: 0;
     }
-    
+
     @media (max-width: 768px) {
-        .navbar-menu {
-            display: none;
-        }
-        
-        .search-form {
-            display: none;
-        }
+        .navbar-menu { display: none; }
+        .search-form { display: none; }
+        .mobile-menu-toggle { display: inline-flex; }
     }
 </style>

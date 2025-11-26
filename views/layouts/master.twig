@@ -59,12 +59,11 @@
     {# Footer Component #}
     {% include 'components/footer/index' %}
     
-    {# Scripts #}
-    <script src="{{ 'js/main.js' | asset_url }}" defer></script>
-    <script src="{{ 'js/theme.js' | asset_url }}" defer></script>
-    
     {# Twilight SDK #}
     <script src="https://cdn.salla.sa/cdn/store/sdk/v3/twilight.umd.js" defer></script>
+
+    {# Scripts #}
+    <script src="{{ 'js/theme.js' | asset_url }}" defer></script>
     
     {% block scripts_extra %}{% endblock %}
 </body>

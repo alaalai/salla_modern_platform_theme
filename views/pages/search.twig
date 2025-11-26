@@ -1,0 +1,40 @@
+{# Search Page - صفحة البحث #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="search-page">
+    <div class="container">
+        <h1 class="page-title">{{ 'common.search' | t }}</h1>
+        <p class="page-subtitle">{{ 'search.results' | default('نتائج البحث') }}: {{ search.query }}</p>
+
+        <form class="search-form search-form-wide" role="search" method="get" action="/search" data-search-form>
+            <label class="sr-only" for="search-query">{{ 'common.search' | t }}</label>
+            <input id="search-query" name="q" class="search-input" type="search" value="{{ search.query }}" placeholder="{{ 'common.search' | t }}" data-search-input>
+            <button type="submit" class="btn btn-primary">{{ 'common.search' | t }}</button>
+        </form>
+
+        {% if search.results and search.results | length > 0 %}
+        <div class="products-grid">
+            {% for product in search.results %}
+                <div class="product-col">{% include 'components/product/card' with {'product': product} %}</div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>{{ 'search.empty' | default('لم يتم العثور على نتائج') }}</p>
+            <a class="btn btn-outline" href="/products">{{ 'hero.explore' | t }}</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .search-page { padding: var(--spacing-3xl) 0; }
+    .page-subtitle { color: var(--text-light); margin-bottom: var(--spacing-lg); }
+    .search-form-wide { display: flex; gap: 12px; margin-bottom: var(--spacing-xl); }
+    .search-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: var(--spacing-lg); }
+    .empty-state { text-align: center; padding: var(--spacing-2xl); background: var(--secondary-color); border-radius: var(--border-radius-md); }
+    @media (max-width: 640px) { .search-form-wide { flex-direction: column; } .search-input { width: 100%; } }
+</style>
+{% endblock %}

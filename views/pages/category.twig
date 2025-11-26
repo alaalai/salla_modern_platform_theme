@@ -1,0 +1,34 @@
+{# Category Page - صفحة الفئة #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="category-page">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">{{ category.name }}</h1>
+            {% if category.description %}<p class="page-subtitle">{{ category.description }}</p>{% endif %}
+        </header>
+
+        <div class="products-grid">
+            {% for product in category.products | default(products) %}
+                <div class="product-col">{% include 'components/product/card' with {'product': product} %}</div>
+            {% else %}
+                <div class="empty-state">
+                    <p>{{ 'products.empty' | default('لا توجد منتجات في هذه الفئة') }}</p>
+                    <a class="btn btn-primary" href="/products">{{ 'hero.explore' | t }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .category-page { padding: var(--spacing-3xl) 0; }
+    .page-header { margin-bottom: var(--spacing-xl); }
+    .page-title { margin: 0; color: var(--primary-color); }
+    .page-subtitle { color: var(--text-light); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: var(--spacing-lg); }
+    .empty-state { grid-column: 1 / -1; text-align: center; padding: var(--spacing-2xl); background: var(--secondary-color); border-radius: var(--border-radius-md); }
+    @media (max-width: 640px) { .products-grid { grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); } }
+</style>
+{% endblock %}
