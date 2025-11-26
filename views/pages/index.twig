@@ -187,15 +187,16 @@
                 <h2 class="newsletter-title">{{ 'footer.newsletter' | t }}</h2>
                 <p class="newsletter-desc">اشترك في نشرتنا البريدية للحصول على آخر العروض والأخبار</p>
                 
-                <form class="newsletter-form" method="post" action="/subscribe">
+                <form class="newsletter-form" method="post" action="/subscribe" data-newsletter-form>
                     <div class="form-group">
-                        <input 
-                            type="email" 
-                            name="email" 
-                            class="form-input" 
-                            placeholder="{{ 'footer.email' | t }}" 
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-input"
+                            placeholder="{{ 'footer.email' | t }}"
                             required
                             aria-label="{{ 'footer.email' | t }}"
+                            data-newsletter-email
                         >
                         <button type="submit" class="form-btn">{{ 'footer.subscribe' | t }}</button>
                     </div>

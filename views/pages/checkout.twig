@@ -1,0 +1,92 @@
+{# Checkout Page - صفحة إنهاء الطلب #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="checkout-page">
+    <div class="container">
+        <h1 class="page-title">{{ 'checkout.order_summary' | default('إتمام الشراء') }}</h1>
+        <div class="checkout-layout">
+            <section class="checkout-section">
+                <h2 class="section-title">{{ 'checkout.shipping_info' | t }}</h2>
+                <form class="checkout-form" aria-label="بيانات الشحن">
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>{{ 'checkout.name' | default('الاسم الكامل') }}</span>
+                            <input type="text" name="name" required>
+                        </label>
+                        <label class="form-field">
+                            <span>{{ 'checkout.email' | default('البريد الإلكتروني') }}</span>
+                            <input type="email" name="email" required>
+                        </label>
+                        <label class="form-field">
+                            <span>{{ 'checkout.phone' | default('رقم الجوال') }}</span>
+                            <input type="tel" name="phone" required>
+                        </label>
+                        <label class="form-field">
+                            <span>{{ 'checkout.address' | default('العنوان') }}</span>
+                            <input type="text" name="address" required>
+                        </label>
+                        <label class="form-field">
+                            <span>{{ 'checkout.city' | default('المدينة') }}</span>
+                            <input type="text" name="city" required>
+                        </label>
+                        <label class="form-field">
+                            <span>{{ 'checkout.postal_code' | default('الرمز البريدي') }}</span>
+                            <input type="text" name="zip" required>
+                        </label>
+                    </div>
+                </form>
+
+                <h2 class="section-title">{{ 'checkout.payment_info' | t }}</h2>
+                <div class="payment-methods" role="group" aria-label="طرق الدفع">
+                    <label class="payment-option"><input type="radio" name="payment" checked> {{ 'checkout.card' | default('بطاقة ائتمانية') }}</label>
+                    <label class="payment-option"><input type="radio" name="payment"> {{ 'checkout.cod' | default('الدفع عند الاستلام') }}</label>
+                </div>
+            </section>
+
+            <aside class="order-summary" aria-label="ملخص الطلب">
+                <div class="summary-card">
+                    <h2 class="section-title">{{ 'checkout.order_summary' | t }}</h2>
+                    {% for item in cart.items %}
+                        <div class="summary-item">
+                            <div>
+                                <p class="summary-name">{{ item.name }}</p>
+                                <p class="summary-qty">{{ item.quantity }} × {{ item.price | price }}</p>
+                            </div>
+                            <span class="summary-total">{{ (item.price * item.quantity) | price }}</span>
+                        </div>
+                    {% endfor %}
+
+                    <div class="summary-row"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.subtotal | price }}</span></div>
+                    <div class="summary-row"><span>{{ 'cart.shipping' | t }}</span><span>{{ cart.shipping | price }}</span></div>
+                    <div class="summary-row summary-total-row"><span>{{ 'cart.total' | t }}</span><span>{{ cart.total | price }}</span></div>
+
+                    <button class="btn btn-primary btn-block">{{ 'checkout.place_order' | t }}</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<style>
+    .checkout-page { padding: var(--spacing-3xl) 0; }
+    .checkout-layout { display: grid; grid-template-columns: 2fr 1fr; gap: var(--spacing-xl); align-items: start; }
+    .checkout-section { background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: var(--spacing-xl); }
+    .section-title { margin-top: 0; color: var(--primary-color); }
+    .checkout-form { margin: var(--spacing-md) 0 var(--spacing-lg); }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--text-dark); }
+    .form-field input { padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; }
+    .payment-methods { display: flex; gap: 12px; flex-wrap: wrap; }
+    .payment-option { background: var(--secondary-color); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .order-summary { position: sticky; top: 100px; }
+    .summary-card { background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: var(--spacing-lg); display: flex; flex-direction: column; gap: 12px; }
+    .summary-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    .summary-name { margin: 0; font-weight: 600; }
+    .summary-qty { margin: 4px 0 0; color: var(--text-light); }
+    .summary-row { display: flex; justify-content: space-between; color: var(--text-dark); }
+    .summary-total-row { font-weight: 800; font-size: 18px; }
+    .btn-block { width: 100%; margin-top: 12px; }
+    @media (max-width: 1024px) { .checkout-layout { grid-template-columns: 1fr; } .order-summary { position: static; } }
+</style>
+{% endblock %}

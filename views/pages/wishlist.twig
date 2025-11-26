@@ -1,0 +1,28 @@
+{# Wishlist Page - صفحة المفضلة #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="wishlist-page">
+    <div class="container">
+        <h1 class="page-title">{{ 'wishlist.title' | default('قائمة الرغبات') }}</h1>
+        {% if wishlist.items and wishlist.items | length > 0 %}
+            <div class="products-grid">
+                {% for item in wishlist.items %}
+                    <div class="product-col">{% include 'components/product/card' with {'product': item} %}</div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>{{ 'wishlist.empty' | default('قائمة الرغبات فارغة حالياً') }}</p>
+                <a class="btn btn-primary" href="/products">{{ 'hero.explore' | t }}</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .wishlist-page { padding: var(--spacing-3xl) 0; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: var(--spacing-lg); }
+    .empty-state { text-align: center; padding: var(--spacing-2xl); background: var(--secondary-color); border-radius: var(--border-radius-md); }
+</style>
+{% endblock %}

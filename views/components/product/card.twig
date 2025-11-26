@@ -30,7 +30,7 @@
         
         {# Wishlist Button #}
         {% if theme.settings.get('enable_wishlist') %}
-        <button class="wishlist-btn" aria-label="إضافة إلى المفضلة" title="إضافة إلى المفضلة">
+        <button class="wishlist-btn" aria-label="إضافة إلى المفضلة" title="إضافة إلى المفضلة" data-wishlist-toggle data-product-id="{{ product.id }}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
@@ -87,7 +87,7 @@
     {# Product Actions #}
     <div class="product-actions">
         {% if product.quantity > 0 %}
-            <button class="btn btn-add-cart" data-product-id="{{ product.id }}">
+            <button class="btn btn-add-cart" data-add-to-cart data-product-id="{{ product.id }}" data-quantity="1">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1h7.586a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM15 16a2 2 0 11-4 0 2 2 0 014 0zm-8 0a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
