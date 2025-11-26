@@ -1,0 +1,71 @@
+{# Master Layout - المخطط الرئيسي #}
+<!DOCTYPE html>
+<html lang="{{ store.locale }}" dir="{{ store.direction }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ page_title | default(store.name) }}</title>
+    <meta name="description" content="{{ page_description | default(store.description) }}">
+    <meta name="keywords" content="{{ page_keywords | default('سلة, متجر, تسوق') }}">
+    
+    {# Open Graph Tags #}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{{ page_title | default(store.name) }}">
+    <meta property="og:description" content="{{ page_description | default(store.description) }}">
+    <meta property="og:image" content="{{ store.logo_url }}">
+    
+    {# Favicon #}
+    <link rel="icon" type="image/x-icon" href="{{ 'images/favicon.ico' | asset_url }}">
+    
+    {# Stylesheets #}
+    <link rel="stylesheet" href="{{ 'styles/main.css' | asset_url }}">
+    
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    {# Theme Settings CSS Variables #}
+    <style>
+        :root {
+            --primary-color: {{ theme.settings.get('primary_color') }};
+            --accent-color: {{ theme.settings.get('accent_color') }};
+            --background-color: {{ theme.settings.get('background_color') }};
+            --secondary-color: {{ theme.settings.get('secondary_color') }};
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+    </style>
+    
+    {# Additional head content #}
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    {# Skip to main content link for accessibility #}
+    <a href="#main-content" class="sr-only">اذهب إلى المحتوى الرئيسي</a>
+    
+    {# Header Component #}
+    {% include 'components/header/index' %}
+    
+    {# Main Content #}
+    <main id="main-content" class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    {# Footer Component #}
+    {% include 'components/footer/index' %}
+    
+    {# Scripts #}
+    <script src="{{ 'js/main.js' | asset_url }}" defer></script>
+    <script src="{{ 'js/theme.js' | asset_url }}" defer></script>
+    
+    {# Twilight SDK #}
+    <script src="https://cdn.salla.sa/cdn/store/sdk/v3/twilight.umd.js" defer></script>
+    
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>

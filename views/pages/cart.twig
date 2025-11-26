@@ -1,0 +1,498 @@
+{# Cart Page - صفحة سلة التسوق #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="cart-page">
+    <div class="container">
+        <h1 class="page-title">{{ 'cart.checkout' | t }}</h1>
+
+        {% if cart.items | length > 0 %}
+        <div class="cart-main">
+            {# Cart Items #}
+            <div class="cart-items">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'products.title' | t }}</th>
+                            <th>{{ 'products.price' | t }}</th>
+                            <th>{{ 'cart.quantity' | t }}</th>
+                            <th>الإجمالي</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart.items %}
+                        <tr class="cart-item" data-item-id="{{ item.id }}">
+                            <td>
+                                <div class="item-info">
+                                    <img src="{{ item.image }}" alt="{{ item.name }}" class="item-image">
+                                    <div class="item-details">
+                                        <h4 class="item-name">
+                                            <a href="{{ item.product_url }}">{{ item.name }}</a>
+                                        </h4>
+                                        {% if item.variant %}
+                                        <p class="item-variant">{{ item.variant }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="item-price">{{ item.price | price }}</td>
+                            <td>
+                                <div class="quantity-input">
+                                    <button type="button" class="qty-btn" onclick="updateQty({{ item.id }}, -1)">−</button>
+                                    <input type="number" value="{{ item.quantity }}" class="qty-value" onchange="updateQty({{ item.id }}, this.value)">
+                                    <button type="button" class="qty-btn" onclick="updateQty({{ item.id }}, 1)">+</button>
+                                </div>
+                            </td>
+                            <td class="item-total">{{ (item.price * item.quantity) | price }}</td>
+                            <td>
+                                <button class="remove-btn" onclick="removeItem({{ item.id }})" title="حذف">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3H4v2h16V7h-3z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# Cart Summary #}
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h2 class="summary-title">ملخص الطلب</h2>
+
+                    <div class="summary-row">
+                        <span>{{ 'cart.subtotal' | t }}:</span>
+                        <span class="subtotal">{{ cart.subtotal | price }}</span>
+                    </div>
+
+                    {% if cart.discount > 0 %}
+                    <div class="summary-row discount">
+                        <span>الخصم:</span>
+                        <span>-{{ cart.discount | price }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="summary-row">
+                        <span>{{ 'cart.shipping' | t }}:</span>
+                        <span class="shipping-cost">{{ cart.shipping | price }}</span>
+                    </div>
+
+                    {% if cart.tax > 0 %}
+                    <div class="summary-row">
+                        <span>الضريبة:</span>
+                        <span>{{ cart.tax | price }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row total">
+                        <span>{{ 'cart.total' | t }}:</span>
+                        <span class="total-amount">{{ cart.total | price }}</span>
+                    </div>
+
+                    <a href="/checkout" class="btn btn-primary btn-block">
+                        {{ 'checkout.place_order' | t }}
+                    </a>
+
+                    <a href="/products" class="btn btn-outline btn-block">
+                        {{ 'cart.continue_shopping' | t }}
+                    </a>
+
+                    {# Coupon Code #}
+                    <div class="coupon-section">
+                        <form method="post" action="/cart/apply-coupon">
+                            <div class="form-group">
+                                <input 
+                                    type="text" 
+                                    name="coupon_code" 
+                                    placeholder="أدخل رمز الخصم"
+                                    class="form-input"
+                                >
+                                <button type="submit" class="form-btn">تطبيق</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Related Products #}
+        {% if related_products %}
+        <section class="recommended-products">
+            <h2 class="section-title">منتجات قد تعجبك</h2>
+            <div class="products-grid">
+                {% for product in related_products | slice(0, 4) %}
+                <div class="product-col">
+                    {% include 'components/product/card' with {'product': product} %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% else %}
+        {# Empty Cart #}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </div>
+            <h2>{{ 'cart.empty' | t }}</h2>
+            <p>لا توجد منتجات في سلتك حالياً</p>
+            <a href="/products" class="btn btn-primary">
+                {{ 'cart.continue_shopping' | t }}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .cart-page {
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .page-title {
+        margin: 0 0 var(--spacing-2xl) 0;
+    }
+
+    .cart-main {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: var(--spacing-2xl);
+        margin-bottom: var(--spacing-3xl);
+    }
+
+    /* Cart Items */
+    .cart-items {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .cart-table th {
+        background: var(--secondary-color);
+        padding: var(--spacing-md) var(--spacing-lg);
+        text-align: right;
+        font-weight: 600;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .cart-table td {
+        padding: var(--spacing-lg);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-item {
+        transition: background-color var(--transition-base);
+    }
+
+    .cart-item:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--border-radius-sm);
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-name {
+        margin: 0 0 var(--spacing-sm) 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .item-name a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .item-variant {
+        margin: 0;
+        font-size: 12px;
+        color: var(--text-light);
+    }
+
+    .item-price,
+    .item-total {
+        font-weight: 600;
+        color: var(--primary-color);
+        white-space: nowrap;
+    }
+
+    .quantity-input {
+        display: flex;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        width: fit-content;
+    }
+
+    .qty-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: var(--secondary-color);
+        cursor: pointer;
+        font-weight: 600;
+        transition: all var(--transition-base);
+    }
+
+    .qty-btn:hover {
+        background: var(--accent-color);
+        color: white;
+    }
+
+    .qty-value {
+        width: 50px;
+        border: none;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .remove-btn {
+        background: #FEE2E2;
+        border: none;
+        color: #DC2626;
+        border-radius: var(--border-radius-sm);
+        padding: 6px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .remove-btn:hover {
+        background: #DC2626;
+        color: white;
+    }
+
+    /* Cart Summary */
+    .cart-summary {
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-md);
+        padding: var(--spacing-lg);
+    }
+
+    .summary-title {
+        font-size: 18px;
+        margin: 0 0 var(--spacing-lg) 0;
+        color: var(--primary-color);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 14px;
+    }
+
+    .summary-row.discount {
+        color: var(--success);
+    }
+
+    .summary-row.total {
+        border-bottom: none;
+        padding: var(--spacing-md) 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .total-amount {
+        font-size: 20px;
+        color: var(--accent-color);
+    }
+
+    .summary-divider {
+        height: 2px;
+        background: var(--border-color);
+        margin: var(--spacing-md) 0;
+    }
+
+    .btn-block {
+        width: 100%;
+        margin-top: var(--spacing-md);
+    }
+
+    .coupon-section {
+        margin-top: var(--spacing-lg);
+        padding-top: var(--spacing-lg);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .coupon-section .form-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .form-input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        font-size: 14px;
+    }
+
+    .form-btn {
+        padding: 8px 16px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        transition: background var(--transition-base);
+    }
+
+    .form-btn:hover {
+        background: #7BCA00;
+    }
+
+    /* Empty Cart */
+    .empty-cart {
+        text-align: center;
+        padding: var(--spacing-3xl) var(--spacing-lg);
+    }
+
+    .empty-cart-icon {
+        color: var(--text-light);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .empty-cart h2 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .empty-cart p {
+        color: var(--text-light);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    /* Recommended Products */
+    .recommended-products {
+        margin-top: var(--spacing-3xl);
+        padding-top: var(--spacing-3xl);
+        border-top: 2px solid var(--border-color);
+    }
+
+    .section-title {
+        font-size: var(--font-size-2xl);
+        margin: 0 0 var(--spacing-2xl) 0;
+        color: var(--primary-color);
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .cart-main {
+            grid-template-columns: 1fr;
+        }
+
+        .cart-summary {
+            position: static;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: var(--spacing-md);
+            font-size: 12px;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .cart-table {
+            font-size: 12px;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .item-info {
+            flex-direction: column;
+        }
+
+        .item-image {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+function updateQty(itemId, change) {
+    // Call Salla API to update cart
+    if (window.salla && window.salla.cart) {
+        const input = document.querySelector(`[data-item-id="${itemId}"] .qty-value`);
+        const newQty = typeof change === 'number' ? 
+            parseInt(input.value) + change : 
+            parseInt(change);
+
+        if (newQty > 0) {
+            window.salla.cart.updateItem(itemId, newQty).then(() => {
+                location.reload();
+            });
+        }
+    }
+}
+
+function removeItem(itemId) {
+    if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+        if (window.salla && window.salla.cart) {
+            window.salla.cart.removeItem(itemId).then(() => {
+                location.reload();
+            });
+        }
+    }
+}
+</script>
+{% endblock %}

@@ -1,35 +1,257 @@
 {
-  "name": "Modern Platform Theme",
-  "description": "A modern and professional theme for digital products and creative services on Salla",
   "version": "1.0.0",
+  "theme_name": "ثيم المنصة العصرية",
+  "description": "ثيم حديث واحترافي مصمم للمتاجر المتخصصة في المنتجات الرقمية والخدمات الإبداعية. يجمع بين التصميم الجذاب والأداء العالي والتوافقية الكاملة مع معايير سلة",
+  "repo_url": "https://github.com/alaalai/salla_modern_platform_theme",
+  "support_url": "https://github.com/alaalai/salla_modern_platform_theme/issues",
+  "preview_url": "https://salla-theme-preview.example.com",
   "author": "Salla Theme Developer",
   "license": "MIT",
-  "repository": "https://github.com/alaalai/salla_modern_platform_theme",
-  "homepage": "https://github.com/alaalai/salla_modern_platform_theme",
-  "keywords": ["salla", "theme", "ecommerce", "modern", "digital"],
-  "main": "client/src/main.tsx",
-  "styles": "client/src/index.css",
-  "settings": {
-    "colors": {
-      "primary": "#0F172A",
-      "accent": "#84CC16",
-      "background": "#FFFFFF",
-      "secondary": "#F3F4F6"
+  "industry": ["Digital Products", "Electronics", "Creative Services"],
+  "settings": [
+    {
+      "type": "string",
+      "id": "store_name",
+      "label": "اسم المتجر",
+      "value": "متجري الحديث"
     },
-    "fonts": {
-      "heading": "Poppins",
-      "body": "Inter"
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "اللون الأساسي",
+      "value": "#0F172A",
+      "format": "color"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "لون التمييز",
+      "value": "#84CC16",
+      "format": "color"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "لون الخلفية",
+      "value": "#FFFFFF",
+      "format": "color"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "اللون الثانوي",
+      "value": "#F3F4F6",
+      "format": "color"
+    },
+    {
+      "type": "boolean",
+      "id": "show_announcement_bar",
+      "label": "عرض شريط الإعلانات",
+      "format": "switch",
+      "selected": true
+    },
+    {
+      "type": "string",
+      "id": "announcement_text",
+      "label": "نص الإعلان",
+      "value": "🎉 عرض خاص! احصل على خصم 20% على جميع المنتجات"
+    },
+    {
+      "type": "boolean",
+      "id": "enable_newsletter",
+      "label": "تفعيل النشرة البريدية",
+      "format": "switch",
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "show_testimonials",
+      "label": "عرض شهادات العملاء",
+      "format": "switch",
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "enable_wishlist",
+      "label": "تفعيل قائمة الرغبات",
+      "format": "switch",
+      "selected": true
+    },
+    {
+      "type": "string",
+      "id": "placeholder",
+      "label": "صورة العنصر النائب",
+      "format": "hidden",
+      "value": "images/placeholder.png"
     }
-  },
-  "features": {
-    "responsive": true,
-    "rtl": true,
-    "darkMode": false,
-    "customizable": true
-  },
-  "salla": {
-    "type": "store",
-    "version": "1.0.0",
-    "minVersion": "1.0.0"
-  }
+  ],
+  "features": [
+    "component-featured-products",
+    "component-fixed-banner",
+    "component-fixed-products",
+    "component-photos-slider",
+    "component-products-slider",
+    "component-parallax-background",
+    "component-random-testimonials",
+    "component-testimonials",
+    "component-square-photos",
+    "component-store-features",
+    "component-youtube",
+    "filters"
+  ],
+  "components": [
+    {
+      "name": "hero-banner",
+      "title": "شريط البطل",
+      "icon": "sicon-image-carousel",
+      "path": "home.hero-banner",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "label": "العنوان الرئيسي",
+          "required": true
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "العنوان الفرعي"
+        },
+        {
+          "id": "background_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة الخلفية",
+          "required": true
+        },
+        {
+          "id": "cta_text",
+          "type": "string",
+          "label": "نص زر الدعوة"
+        },
+        {
+          "id": "cta_link",
+          "type": "string",
+          "label": "رابط الدعوة"
+        }
+      ]
+    },
+    {
+      "name": "product-showcase",
+      "title": "عرض المنتجات",
+      "icon": "sicon-products",
+      "path": "home.product-showcase",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "label": "عنوان القسم",
+          "required": true
+        },
+        {
+          "id": "description",
+          "type": "string",
+          "format": "textarea",
+          "label": "وصف القسم"
+        },
+        {
+          "id": "product_limit",
+          "type": "integer",
+          "label": "عدد المنتجات المعروضة",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "name": "features-section",
+      "title": "قسم الميزات",
+      "icon": "sicon-star",
+      "path": "home.features-section",
+      "fields": [
+        {
+          "id": "features",
+          "type": "collection",
+          "format": "collection",
+          "label": "الميزات",
+          "minLength": 1,
+          "maxLength": 6,
+          "fields": [
+            {
+              "id": "feature_icon",
+              "type": "string",
+              "format": "image",
+              "label": "أيقونة الميزة"
+            },
+            {
+              "id": "feature_title",
+              "type": "string",
+              "label": "عنوان الميزة",
+              "required": true
+            },
+            {
+              "id": "feature_description",
+              "type": "string",
+              "format": "textarea",
+              "label": "وصف الميزة"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "testimonials-custom",
+      "title": "شهادات العملاء المخصصة",
+      "icon": "sicon-star",
+      "path": "home.testimonials-custom",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "label": "عنوان القسم",
+          "required": true
+        },
+        {
+          "id": "testimonials",
+          "type": "collection",
+          "format": "collection",
+          "label": "الشهادات",
+          "minLength": 1,
+          "maxLength": 10,
+          "fields": [
+            {
+              "id": "customer_name",
+              "type": "string",
+              "label": "اسم العميل",
+              "required": true
+            },
+            {
+              "id": "customer_title",
+              "type": "string",
+              "label": "المسمى الوظيفي"
+            },
+            {
+              "id": "customer_image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة العميل"
+            },
+            {
+              "id": "testimonial_text",
+              "type": "string",
+              "format": "textarea",
+              "label": "نص الشهادة",
+              "required": true
+            },
+            {
+              "id": "rating",
+              "type": "integer",
+              "label": "التقييم (1-5)",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

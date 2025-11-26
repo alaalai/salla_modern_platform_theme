@@ -1,0 +1,81 @@
+{
+  "common": {
+    "store_name": "My Modern Store",
+    "welcome": "Welcome",
+    "search": "Search",
+    "cart": "Cart",
+    "account": "My Account",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "header": {
+    "announcement": "🎉 Special Offer! Get 20% off all products",
+    "menu": "Menu",
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "contact": "Contact",
+    "about": "About"
+  },
+  "hero": {
+    "title": "Your Modern Digital Platform",
+    "subtitle": "Discover the best digital products and creative services in one place",
+    "cta_button": "Start Shopping",
+    "explore": "Explore More"
+  },
+  "products": {
+    "title": "Featured Products",
+    "price": "Price",
+    "add_to_cart": "Add to Cart",
+    "out_of_stock": "Out of Stock",
+    "in_stock": "In Stock",
+    "rating": "Rating",
+    "reviews": "Reviews"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "fast_delivery": "Fast Delivery",
+    "secure_payment": "Secure Payment",
+    "quality": "High Quality",
+    "support": "24/7 Support"
+  },
+  "testimonials": {
+    "title": "What Our Customers Say",
+    "subtitle": "Read testimonials from our satisfied customers"
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "returns": "Return Policy",
+    "social_media": "Follow Us",
+    "newsletter": "Subscribe to Our Newsletter",
+    "email": "Your Email",
+    "subscribe": "Subscribe",
+    "copyright": "All Rights Reserved"
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "continue_shopping": "Continue Shopping",
+    "checkout": "Checkout",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "shipping_info": "Shipping Information",
+    "payment_info": "Payment Information",
+    "order_summary": "Order Summary",
+    "place_order": "Place Order",
+    "continue": "Continue"
+  },
+  "errors": {
+    "not_found": "Page Not Found",
+    "something_wrong": "Something went wrong, please try again later",
+    "network_error": "Network error, please check your connection"
+  }
+}

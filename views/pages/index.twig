@@ -1,0 +1,626 @@
+{# Home Page - الصفحة الرئيسية #}
+{% extends "layouts/master" %}
+
+{% block content %}
+<div class="home-page">
+    {# Hero Section #}
+    <section class="hero-section" id="hero">
+        <div class="hero-container">
+            <div class="hero-background">
+                {% if home.hero_banner %}
+                    <img 
+                        src="{{ home.hero_banner.background_image }}" 
+                        alt="خلفية البطل" 
+                        class="hero-image"
+                    >
+                {% else %}
+                    <img 
+                        src="{{ 'images/hero-default.jpg' | asset_url }}" 
+                        alt="خلفية البطل" 
+                        class="hero-image"
+                    >
+                {% endif %}
+                <div class="hero-overlay"></div>
+            </div>
+            
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    {% if home.hero_banner %}
+                        {{ home.hero_banner.title }}
+                    {% else %}
+                        {{ 'hero.title' | t }}
+                    {% endif %}
+                </h1>
+                
+                {% if home.hero_banner and home.hero_banner.subtitle %}
+                <p class="hero-subtitle">{{ home.hero_banner.subtitle }}</p>
+                {% else %}
+                <p class="hero-subtitle">{{ 'hero.subtitle' | t }}</p>
+                {% endif %}
+                
+                <div class="hero-actions">
+                    {% if home.hero_banner and home.hero_banner.cta_link %}
+                    <a href="{{ home.hero_banner.cta_link }}" class="btn btn-primary btn-lg">
+                        {{ home.hero_banner.cta_text | default('hero.cta_button' | t) }}
+                    </a>
+                    {% else %}
+                    <a href="/products" class="btn btn-primary btn-lg">
+                        {{ 'hero.cta_button' | t }}
+                    </a>
+                    {% endif %}
+                    
+                    <a href="#featured" class="btn btn-secondary btn-lg">
+                        {{ 'hero.explore' | t }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    {# Featured Products Section #}
+    <section class="featured-products" id="featured">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ 'products.title' | t }}</h2>
+                <p class="section-subtitle">اكتشف أفضل منتجاتنا المختارة بعناية</p>
+            </div>
+            
+            <div class="products-grid">
+                {% for product in featured_products | slice(0, 6) %}
+                    <div class="product-col">
+                        {% include 'components/product/card' with {'product': product} %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="section-footer">
+                <a href="/products" class="btn btn-outline">
+                    عرض جميع المنتجات
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    {# Features Section #}
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{{ 'features.fast_delivery' | t }}</h3>
+                    <p class="feature-desc">توصيل سريع وآمن إلى جميع أنحاء المملكة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{{ 'features.secure_payment' | t }}</h3>
+                    <p class="feature-desc">دفع آمن وموثوق مع حماية كاملة لبيانات العميل</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
+                            <path d="M12 5v7l6 3.5"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{{ 'features.quality' | t }}</h3>
+                    <p class="feature-desc">منتجات عالية الجودة مختارة بعناية</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{{ 'features.support' | t }}</h3>
+                    <p class="feature-desc">دعم عملاء متاح طوال الوقت لمساعدتك</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    {# Testimonials Section #}
+    {% if theme.settings.get('show_testimonials') %}
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ 'testimonials.title' | t }}</h2>
+                <p class="section-subtitle">{{ 'testimonials.subtitle' | t }}</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                {% for testimonial in testimonials | slice(0, 3) %}
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        {% if testimonial.image %}
+                        <img 
+                            src="{{ testimonial.image }}" 
+                            alt="{{ testimonial.name }}" 
+                            class="testimonial-avatar"
+                        >
+                        {% else %}
+                        <div class="testimonial-avatar-placeholder">
+                            {{ testimonial.name | first }}
+                        </div>
+                        {% endif %}
+                        <div class="testimonial-info">
+                            <h4 class="testimonial-name">{{ testimonial.name }}</h4>
+                            <p class="testimonial-title">{{ testimonial.title }}</p>
+                        </div>
+                    </div>
+                    
+                    <p class="testimonial-text">{{ testimonial.text }}</p>
+                    
+                    {% if testimonial.rating %}
+                    <div class="testimonial-rating">
+                        {% for i in range(1, testimonial.rating | int + 1) %}
+                        <span class="star">★</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    {# Newsletter Section #}
+    {% if theme.settings.get('enable_newsletter') %}
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">{{ 'footer.newsletter' | t }}</h2>
+                <p class="newsletter-desc">اشترك في نشرتنا البريدية للحصول على آخر العروض والأخبار</p>
+                
+                <form class="newsletter-form" method="post" action="/subscribe">
+                    <div class="form-group">
+                        <input 
+                            type="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="{{ 'footer.email' | t }}" 
+                            required
+                            aria-label="{{ 'footer.email' | t }}"
+                        >
+                        <button type="submit" class="form-btn">{{ 'footer.subscribe' | t }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+<style>
+    .home-page {
+        width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        height: 600px;
+        overflow: hidden;
+    }
+    
+    .hero-container {
+        position: relative;
+        height: 100%;
+    }
+    
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.3) 100%);
+    }
+    
+    .hero-content {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        color: white;
+        z-index: 10;
+    }
+    
+    .hero-title {
+        font-size: 48px;
+        font-weight: 800;
+        margin: 0 0 16px 0;
+        line-height: 1.2;
+        max-width: 600px;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .hero-subtitle {
+        font-size: 18px;
+        margin: 0 0 32px 0;
+        max-width: 500px;
+        line-height: 1.6;
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+        animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Featured Products */
+    .featured-products {
+        padding: 64px 0;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+    
+    .section-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 16px 0;
+        color: var(--primary-color);
+    }
+    
+    .section-subtitle {
+        font-size: 16px;
+        color: var(--text-light);
+        margin: 0;
+    }
+    
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+    
+    .section-footer {
+        text-align: center;
+    }
+    
+    /* Features Section */
+    .features-section {
+        background: var(--secondary-color);
+        padding: 64px 0;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 32px;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition: all var(--transition);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--secondary-color);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-color);
+        margin: 0 auto 16px;
+    }
+    
+    .feature-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: var(--primary-color);
+    }
+    
+    .feature-desc {
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.6;
+    }
+    
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 64px 0;
+    }
+    
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+    }
+    
+    .testimonial-card {
+        background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: var(--border-radius);
+        padding: 32px;
+        transition: all var(--transition);
+    }
+    
+    .testimonial-card:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .testimonial-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .testimonial-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .testimonial-avatar-placeholder {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+    }
+    
+    .testimonial-info {
+        flex: 1;
+    }
+    
+    .testimonial-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .testimonial-title {
+        margin: 4px 0 0 0;
+        font-size: 12px;
+        color: var(--text-light);
+    }
+    
+    .testimonial-text {
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin: 0 0 16px 0;
+    }
+    
+    .testimonial-rating {
+        display: flex;
+        gap: 4px;
+    }
+    
+    .testimonial-rating .star {
+        color: #FCD34D;
+        font-size: 16px;
+    }
+    
+    /* Newsletter Section */
+    .newsletter-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1F2937 100%);
+        color: white;
+        padding: 64px 0;
+    }
+    
+    .newsletter-content {
+        text-align: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .newsletter-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 16px 0;
+    }
+    
+    .newsletter-desc {
+        font-size: 16px;
+        margin: 0 0 32px 0;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+    
+    .newsletter-form .form-group {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .form-input {
+        flex: 1;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .form-btn {
+        padding: 12px 32px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background var(--transition);
+    }
+    
+    .form-btn:hover {
+        background: #7BCA00;
+    }
+    
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-decoration: none;
+        text-align: center;
+    }
+    
+    .btn-primary {
+        background: var(--accent-color);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #7BCA00;
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+    
+    .btn-secondary:hover {
+        background: white;
+        color: var(--primary-color);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .btn-lg {
+        padding: 16px 32px;
+        font-size: 16px;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            height: 400px;
+        }
+        
+        .hero-title {
+            font-size: 32px;
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+        
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+        }
+        
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 24px;
+        }
+        
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
