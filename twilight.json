@@ -6,16 +6,30 @@
   "license": "MIT",
   "repository": "https://github.com/alaalai/salla_modern_platform_theme",
   "homepage": "https://github.com/alaalai/salla_modern_platform_theme",
-  "keywords": ["salla", "theme", "ecommerce", "modern"],
+  "keywords": ["salla", "theme", "ecommerce", "modern", "digital"],
+  "main": "client/src/main.tsx",
+  "styles": "client/src/index.css",
   "settings": {
     "colors": {
       "primary": "#0F172A",
       "accent": "#84CC16",
-      "background": "#FFFFFF"
+      "background": "#FFFFFF",
+      "secondary": "#F3F4F6"
+    },
+    "fonts": {
+      "heading": "Poppins",
+      "body": "Inter"
     }
   },
   "features": {
     "responsive": true,
-    "rtl": true
+    "rtl": true,
+    "darkMode": false,
+    "customizable": true
+  },
+  "salla": {
+    "type": "store",
+    "version": "1.0.0",
+    "minVersion": "1.0.0"
   }
 }
