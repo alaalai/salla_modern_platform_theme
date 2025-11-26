@@ -1,0 +1,97 @@
+{
+  "name": "المنصة العصرية",
+  "description": "ثيم حديث واحترافي لمتاجر المنتجات الرقمية والخدمات الإبداعية",
+  "version": "1.0.0",
+  "author": "Modern Platform Theme",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/salla_modern_platform_theme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/salla_modern_platform_theme.git"
+  },
+  "keywords": [
+    "salla",
+    "theme",
+    "ecommerce",
+    "digital-products",
+    "modern",
+    "responsive"
+  ],
+  "categories": [
+    "digital-products",
+    "services",
+    "creative"
+  ],
+  "settings": {
+    "colors": {
+      "primary": "#0F172A",
+      "accent": "#84CC16",
+      "background": "#FFFFFF",
+      "text": "#0F172A"
+    },
+    "fonts": {
+      "heading": "Poppins",
+      "body": "Inter"
+    }
+  },
+  "features": {
+    "responsive": true,
+    "rtl": true,
+    "darkMode": false,
+    "customizable": true
+  },
+  "sections": [
+    {
+      "name": "Hero",
+      "description": "قسم البطل مع صورة خلفية وزر دعوة للعمل"
+    },
+    {
+      "name": "Features",
+      "description": "قسم الميزات الرئيسية"
+    },
+    {
+      "name": "Products",
+      "description": "قسم المنتجات المميزة"
+    },
+    {
+      "name": "Testimonials",
+      "description": "قسم شهادات العملاء"
+    },
+    {
+      "name": "CTA",
+      "description": "قسم الدعوة للعمل النهائي"
+    }
+  ],
+  "pages": [
+    "home",
+    "products",
+    "product-detail",
+    "cart",
+    "checkout",
+    "thank-you"
+  ],
+  "components": [
+    "header",
+    "footer",
+    "product-card",
+    "testimonials",
+    "hero",
+    "features"
+  ],
+  "supportedLanguages": [
+    "ar",
+    "en"
+  ],
+  "minSallaVersion": "1.0.0",
+  "screenshots": [
+    {
+      "url": "https://via.placeholder.com/1200x800?text=Modern+Platform+Theme",
+      "alt": "صفحة رئيسية"
+    }
+  ],
+  "support": {
+    "email": "support@example.com",
+    "website": "https://example.com",
+    "documentation": "https://github.com/yourusername/salla_modern_platform_theme/wiki"
+  }
+}
